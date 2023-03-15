@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500&family=Montserrat:wght@300;400;500&family=Poppins:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+
+/*Global CSS*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+/*Navbar CSS Starts*/
+.navbar-items{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.navbar-items ul{
+    position: relative;
+    margin: 0px auto;
+    text-align: center;
+}
+
+.navbar-items ul li a{
+    font-weight: 600;
+}
+
+.navbar-items ul li a:hover{
+    color: black !important;
+}
+
+/* .navbar-items button,
+.navbar-items button:focus{
+    background-color: #2a38a1;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    
+}
+
+.navbar-items button:hover,
+.navbar-items button:focus:hover{
+    border-color: #0067cb;
+    color: #2a38a1;
+    background: transparent;
+    border: 1px solid #2a38a1;
+} */
+
+/*Navbar CSS Ends*/
+
+/*Home CSS Starts*/
+
+.top-titles .top-title-one{
+    font-size: 2.75rem;
+    color: #0ea6d4;
+}
+
+.top-titles .top-title-two{
+    font-size: 5rem;
+    font-weight: 600;
+    color: #2a38a1;
+}
+
+.top-titles .top-title-three{
+    font-size: 1.25rem;
+}
+
+.signin-common-btn{
+    font-size: 1rem;
+    background-color: #e1f3ff;
+    color: #2a38a1;
+    padding: 8px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: 0.25s ease-in-out;
+}
+
+.signin-common-btn:hover{
+    background-color: #2a38a1;
+    color: white;
+}
+
+.home-image img{
+    max-width: 70%;
+}
+
+.search-bar{
+    border: none;
+    border-radius: 10px;
+}
+
+.search-bar input{
+    width: 80%;
+    height: 40px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+}
+
+.search-bar input:focus{
+    outline: none;
+}
+
+.search-blog-btn{
+    width: 20%;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background-color: #0067cb;
+    color: white;
+    font-size: 18px;
+}
+
+.search-blog-btn:hover{
+    background-color: #2a38a1;
+}
+
+.blog-card{
+    transition: 0.3s ease-in-out;
+}
+
+.blog-card:hover{
+    transform: scale(1.05);
+}
+
+/*Home CSS Ends*/
+
+/*Create Blog CSS Starts*/
+
+.write-your-blog h2{
+    background-color: #e1f3ff;
+    padding: 6px 20px;
+    border: none;
+    border-radius: 5px;
+    color: #2a38a1;
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.write-your-blog .blog-title input{
+    height: 50px;
+}
+
+.blog-body textarea{
+    resize: none;
+}
+
+.blog-poster-div input::file-selector-button{
+    height: 40px;
+    width: 125px;
+    border: none;
+    background: #2a38a1;
+    margin-top: 2.5px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    font-weight: bold;
+    text-align: center;
+}
+
+.blog-poster-div input::file-selector-button:hover{
+    background: transparent;
+    border: 1.5px solid #2a38a1;
+    color: #2a38a1;
+}
+
+
+/*Login CSs Starts*/
+.create-acc-btn{
+    font-size: 1rem;
+    background-color: #e1f3ff;
+    color: #2a38a1;
+    padding: 8px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: 0.25s ease-in-out;
+}
+
+.create-acc-btn:hover{
+    background-color: #2a38a1;
+    color: white;
+}
+
+.login-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-buttons button{
+    font-size: 15px;
+}
+
+.login-buttons .create-acc-btn{
+    width: 100%;
+}
+
+.my-form .signin-common-btn{
+    width: 100%;
+}
+
+.form-floating input:focus{
+    outline-color: none;
+}
+
+/* Read Blog CSS Starts*/
+.read-write-buttons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.display-blog-body p::first-letter{
+    font-size: 2.75rem;
+    color: #2a38a1;
+}
+
+.display-blog-title h2,
+.display-blog-title h5,
+.display-blog-title h6{
+    font-weight: 600;
+}
