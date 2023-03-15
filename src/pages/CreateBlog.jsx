@@ -112,10 +112,10 @@ const CreateBlog = () => {
                         console.log(blogPostTimestamp);
                     }
                 });
+                alert("Blog Poster Uploaded successfully !");
             }
             );
             localStorage.getItem("isPosterUploaded", true);//if poster uploaded successfully
-            alert("Blog Poster Uploaded successfully !");
     }
     
     //a function to submit the blog title and blog body to Firestore Database
@@ -144,8 +144,8 @@ const CreateBlog = () => {
                 console.log(error);
             });
             alert("Your Blog posted successfully !");
-            // navigate("/");//getting redirected to home page after successful creation of a blog
-            // window.location.reload();
+            navigate("/");//getting redirected to home page after successful creation of a blog
+            window.location.reload();
         }
     }
 
