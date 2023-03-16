@@ -45,7 +45,7 @@ const Home = () => {
                             </div>
 
                             <div className="home-image d-flex justify-content-center align-items-center">
-                                <img src={HomeImage} className="img-fluid" />
+                                <img src={HomeImage} className="img-fluid mb-lg-3" />
                             </div>
                         </div>
                         
@@ -65,15 +65,21 @@ const Home = () => {
                         {
                             allBlogs.map((blog)=>{
                                 return(
-                                    <div className="col-lg-4 col-md-6 col-12 d-flex justify-content-center mt-3 mb-3">
-                                        <div className="card shadow border-0 blog-card" style={{width: "36rem"}}>
+                                    <div className="col-lg-4 col-md-6 col-12 d-flex justify-content-center">
+                                        <div className="card shadow blog-card mb-5" style={{width: "36rem"}}>
                                             <img src={blog.posterUrl} className="card-img-top"/>
                                             <div className="card-body d-flex flex-column justify-content-center">
-                                                <h5 className="card-title">{blog.title}</h5>
-                                                <p className="card-text">{blog.body.slice(0,100)}...</p>
+                                                <h5 className="card-title mt-2">{blog.title}</h5>
+                                                <p className="card-text" dangerouslySetInnerHTML={{__html:blog.body.slice(0, 90)}}/>
                                                 <div className="read-write-buttons">
                                                     <Link to={`/readblog/${blog.id}`} className="signin-common-btn">Read</Link>
-                                                    <Link to="/createblog" className="signin-common-btn">Write your own</Link>
+                                                    {
+                                                        localStorage.getItem("isAuth") == "true" || localStorage.getItem("isSignedIn") == "true"
+                                                        ?
+                                                        <Link to="/createblog" className="signin-common-btn">Write your own</Link>
+                                                        :
+                                                        <Link><button className="signin-common-btn" onClick={()=>{alert("Please sign in to write a Blog !");}}>Write your own</button></Link>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

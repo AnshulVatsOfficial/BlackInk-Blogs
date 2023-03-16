@@ -78,7 +78,7 @@ a{
 
 .signin-common-btn{
     font-size: 1rem;
-    background-color: #e1f3ff;
+    background-color: rgb(225, 243, 255);
     color: #2a38a1;
     padding: 8px 20px;
     cursor: pointer;
@@ -129,10 +129,21 @@ a{
 
 .blog-card{
     transition: 0.3s ease-in-out;
+    border: none;
+    border-bottom: 3px solid #2a38a1;
 }
 
 .blog-card:hover{
     transform: scale(1.05);
+}
+
+.blog-card h5{
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.blog-card p{
+    font-size: 14px;
 }
 
 /*Home CSS Ends*/
@@ -178,7 +189,6 @@ a{
     border: 1.5px solid #2a38a1;
     color: #2a38a1;
 }
-
 
 /*Login CSs Starts*/
 .create-acc-btn{
@@ -235,4 +245,19 @@ a{
 .display-blog-title h5,
 .display-blog-title h6{
     font-weight: 600;
+}
+
+.write-your-own-btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+.write-your-own-btn #delete-blog{
+    background-color: rgb(255, 230, 230);
+    color: red;
+}
+
+.write-your-own-btn #delete-blog:hover{
+    background-color: rgb(255, 0, 0);
+    color: white;
 }

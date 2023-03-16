@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { database } from '../firebase-config';
 import { useNavigate } from 'react-router-dom';
 import CreateABlogImage from '../assets/createablogimage.jpg';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 //firebase config file (unique for each firebase project)
 const firebaseConfig = {
@@ -24,12 +25,29 @@ const CreateBlog = () => {
     const [myBlogPosterUrl, setMyBlogPosterUrl] = useState("");
     const [blogPosterName, setBlogPosterName] = useState("");//setting name of Blog Poster same as Blog Title
     const [blogPostingTime, setBlogPostingTime] = useState("");
+    const [userId, setUserId] = useState("");
+    const [userDisplayName, setUserDisplayName] = useState("");
+    // const [noOfCharsInBlog, setNoOfCharsInBlog] = useState(500);
+    // const [blogLengthMessage, setBlogLengthMessage] = useState(`Write ${noOfCharsInBlog} more characters`);
 
     let navigate = useNavigate();
 
-    useEffect(()=>{
-        localStorage.setItem("isPosterUploaded", false);
-    }, []);
+    const getBlogBodyLength = (event) => {
+        setBlogBody(event.target.value);
+    }
+
+    const auth = getAuth();//getting user uid on even after refresh so that page content gets displayed even after refresh
+    onAuthStateChanged(auth, (user) => {
+        if(user){
+            const uid = user.uid;
+            const userName = user.displayName;
+            setUserDisplayName(userName);
+            setUserId(uid);
+        }
+        else{
+            console.log("Error gettting UID");
+        }
+    });
 
     //creating reference to store blog info. in a collection named "Blogs" in Firestore Database
     const blogCollectionRef = collection(database, "Blogs");
@@ -42,7 +60,9 @@ const CreateBlog = () => {
         title: blogTitle,
         body: blogBody,
         posterUrl: myBlogPosterUrl,
-        postingTime: blogPostingTime
+        postingTime: blogPostingTime,
+        author: userDisplayName,
+        authorId: userId
     }
 
     const blogPosterMetaData = {//metadata for blog poster being uploaded to Firebase Storage
@@ -112,27 +132,27 @@ const CreateBlog = () => {
                         console.log(blogPostTimestamp);
                     }
                 });
+                alert("Blog Poster Uploaded successfully !");
             }
             );
             localStorage.getItem("isPosterUploaded", true);//if poster uploaded successfully
-            alert("Blog Poster Uploaded successfully !");
     }
     
     //a function to submit the blog title and blog body to Firestore Database
     const submitBlogToFirestore = async () => {
-        if(blogTitle == ""){//if blog title is empty
+        if(blogTitle === ""){//if blog title is empty
             alert("Please enter Blog Title");
         }
         else if(blogTitle.length > 100){//if blog title is more than 100 characters
             alert("Blog Title should be <= 100 characters !");
         }
-        else if(blogBody == ""){//if blog body is empty
+        else if(blogBody === ""){//if blog body is empty
             alert("Please write something in your Blog !");
         }
         else if(blogBody.length < 500){//if blog body is less than 500 characters
             alert("Blog should be atleast 500 characters long or more !");
         }
-        else if(localStorage.getItem("isPosterUploaded") == false){//if blog poster is not uploaded
+        else if(localStorage.getItem("isPosterUploaded") === false){//if blog poster is not uploaded
             alert("Please upload a Blog Poster !");
         }
         else{
@@ -144,10 +164,12 @@ const CreateBlog = () => {
                 console.log(error);
             });
             alert("Your Blog posted successfully !");
-            // navigate("/");//getting redirected to home page after successful creation of a blog
-            // window.location.reload();
+            navigate("/");//getting redirected to home page after successful creation of a blog
+            window.location.reload();
         }
     }
+
+    //a function to add a line break to blog body content everytime user hits the "Add Break" button
 
     return (
         <section id="create-blog-section">
@@ -156,17 +178,19 @@ const CreateBlog = () => {
                     <div className="row d-flex justify-content-center my-4">
 
                         <div className="create-blog-image d-flex justify-content-center align-items-center col-lg-6 col-12 my-2">
-                            <img src={CreateABlogImage} className="img-fluid" style={{maxWidth:"88%"}}/>
+                            <img src={CreateABlogImage} alt="Create a Blog" className="img-fluid" style={{maxWidth:"88%"}}/>
                         </div>
 
                         <div className="write-your-blog d-flex flex-column justify-content-center align-items-center col-lg-6 col-12 my-2">
                             {/* <h2 className="mb-3">What's on your mind today</h2> */}
-                            <div className="blog-title col-12 mb-3">
-                                <input type="text" className="form-control col-12" name="blog-title" id="floatingInput" value={blogTitle} onChange={(event)=>{setBlogTitle(event.target.value)}} placeholder="Your blog title..."/>
+                            <div className="blog-title col-12 mb-3 d-flex align-items-center">
+                                <input type="text" className="form-control mb-lg-0 mb-md-0 mb-sm-0 mb-3" name="blog-title" id="floatingInput" value={blogTitle} onChange={(event)=>{setBlogTitle(event.target.value)}} placeholder="Your blog title..."/>
+                                {/* <button className="add-line-break signin-common-btn ms-lg-5 ms-md-5 ms-sm-5 ms-xs-5" onClick={()=>{(setBlogBody(blogBody+"<br/>"))}}>Add Break <i class="fa-solid fa-circle-plus"></i></button> */}
+                                {/* <p className="ms-lg-3 ms-md-5" style={{fontSize:"13px", textAlign:"center"}}>{blogLengthMessage}</p> */}
                             </div>
 
                             <div className="blog-body col-12 mb-3">
-                                <textarea name="blog-body" className="form-control col-12" id="floatingTextarea" cols="30" rows="10" value={blogBody} onChange={(event)=>{setBlogBody(event.target.value)}} placeholder="Write your blog here..."></textarea>
+                                <textarea name="blog-body" className="form-control col-12" id="floatingTextarea" cols="30" rows="10" value={blogBody} onChange={getBlogBodyLength} placeholder="Write your blog here..."></textarea>
                             </div>
                         
                             <div className="blog-poster-div col-12 d-flex justify-content-center align-items-center">

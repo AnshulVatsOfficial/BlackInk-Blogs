@@ -1,11 +1,25 @@
-import { Link, useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import {useEffect, useState } from "react"
 import { database } from '../firebase-config';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const ReadBlog = () => {
     const { id } = useParams();
     const [blogData, setBlogData] = useState({});
+    const [userId, setUserId] = useState("");
+    let navigate = useNavigate();
+
+    const auth = getAuth();//getting user uid on even after refresh
+    onAuthStateChanged(auth, (user) => {
+        if(user){
+            const uid = user.uid;
+            setUserId(uid);
+        }
+        else{
+            console.log("Error gettting UID");
+        }
+    });
 
     //a function to get details from from Firestore Database
     const getBlogDetails = async () => {
@@ -22,9 +36,27 @@ const ReadBlog = () => {
     //executing the above function on page render
     useEffect(()=>{
         if(id){
-            getBlogDetails();
+            getBlogDetails();         
         }
     }, [id]);
+
+    //a function to delete the blog you've written
+    const deleteYourBlog = async (id) => {
+        if(window.confirm("Do you really want to delete your blog?")){
+            const userBlogPost =  doc(database, "Blogs", id);
+            await deleteDoc(userBlogPost)
+            .then((resolve)=>{
+                console.log("Post Deleted Successfully !");
+                alert("Post Deleted Successfully !");
+                navigate("/");
+                window.location.reload();
+            })
+            .catch((error)=>{
+                console.log("Error Deleting Post !");
+                alert("Error Deleting Post !");
+            });
+        }
+    }
 
     return (
         <section id="read-blog-section">
@@ -37,13 +69,27 @@ const ReadBlog = () => {
 
                         <div className="display-blog-title col-lg-5 col-12 mt-4">
                             <h2 className="">{blogData.title}</h2>
-                            {/* <h5 className="mt-3 mb-2">Author - </h5> */}
+                            <h5 className="mt-3 mb-2">Author - {blogData.author}</h5>
                             <h6 className="mt-3 mb-4">Blog Posted - {blogData.postingTime}</h6>
-                            <div className="write-your-own-btn col-12 pt-3">
-                                <Link to="/createblog"><button className="signin-common-btn col-12">Write your own</button></Link>
-                            </div>
+                            {
+                                blogData.authorId == userId
+                                ?
+                                <div className="write-your-own-btn col-12 pt-3">
+                                    {
+                                        localStorage.getItem("isAuth") === "true"
+                                        ?
+                                        <Link to="/createblog"><button className="signin-common-btn mb-lg-0 mb-md-0 mb-sm-0 mb-3">Write your own</button></Link>
+                                        :
+                                        <Link><button onClick={()=>{alert("Please sign in to write a Blog !");}} className="signin-common-btn mb-lg-0 mb-md-0 mb-sm-0 mb-3">Write your own</button></Link>
+                                    }
+                                    <button className="signin-common-btn mb-lg-0 mb-md-0 mb-sm-0 mb-3" id="delete-blog" onClick={()=>{deleteYourBlog(id)}}>Delete Blog</button>
+                                </div>
+                                :
+                                <div className="write-your-own-btn col-12 pt-3">
+                                    <Link><button onClick={()=>{alert("Please sign in to write a Blog !");}} className="signin-common-btn" style={{width:"100%"}}>Write your own</button></Link>
+                                </div>
+                            }
                         </div>
-
                         <div className="display-blog-body col-12 mt-4">
                             <p dangerouslySetInnerHTML={{__html:blogData.body}} />
                         </div>

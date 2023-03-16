@@ -2,6 +2,14 @@
     .write-your-blog h2{
         font-weight: 600;
     }
+
+    .blog-title button{
+        font-size: 14px;
+    }
+
+    .blog-title button i{
+        font-size: 14px;
+    }
 }
 
 @media screen and (max-width: 991px){
@@ -108,6 +116,10 @@
         font-size: 13px; 
         height: 35px;
     }
+
+    .blog-title{
+        flex-direction: column;
+    }
 }
 
 @media screen and (max-width: 438px){
@@ -161,6 +173,15 @@
 @media screen and (max-width: 392px){
     .write-your-blog h2{
         font-size: 1.15rem;
+    }
+
+    .write-your-own-btn{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .write-your-own-btn button{
+        width: 100%;
     }
 }
 

@@ -81,11 +81,9 @@ const Login = () => {
             navigate("/");
         }
     }
-
     //allowing user to signin directly with Google
     const signInWithGoogle = () => {
-        if((localStorage.getItem("isSignedUp") == "false" && localStorage.getItem("isSignedIn") == "false" ) || (localStorage.getItem("isSignedUp") == "true" && localStorage.getItem("isSignedIn") == "false")){
-            signInWithPopup(auth, provider).
+        signInWithPopup(auth, provider).
             then((response)=>{
                 localStorage.setItem("isAuth", true);
                 localStorage.setItem("isSignedIn", true);
@@ -94,13 +92,7 @@ const Login = () => {
             }).
             catch((error)=>{
                 console.log(error);
-            });
-        }
-        else{
-            alert("You're already signed in !");
-            navigate("/");
-            window.location.reload();
-        }
+        });
     }
 
     //allowing users to sign out
