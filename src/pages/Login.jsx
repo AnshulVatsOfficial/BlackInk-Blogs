@@ -6,6 +6,7 @@ import { useState } from 'react';
 import LoginPageImage from '../assets/loginpageimage.jpg';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
+import { useToast } from '@chakra-ui/react';
 
 const Login = () => {
 
@@ -17,6 +18,8 @@ const Login = () => {
 
     //Allowing user to create a Account if doesn't have one
     const myRealtimeDatabase = getDatabase();
+
+    const toast = useToast();//using Chakra UI Toast
 
     const createUserAccount = (event) => {
         event.preventDefault();
@@ -41,8 +44,17 @@ const Login = () => {
                     console.log(error);
                 });
 
-                alert("Account created successfully !");
-                navigate("/login");
+                toast({
+                    title: 'Account created Successfully !',
+                    description: "We've created your account for you.",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                    position: 'top',
+                })
+                setTimeout(() => {
+                    navigate("/login");
+                }, 3000);
             })
             .catch((error) => {
                 console.log(error);        
@@ -60,15 +72,24 @@ const Login = () => {
     //allowing user to sign in with his email and password if has alreday a account
     const allowUserSignIn = (event) =>{
         event.preventDefault();
-        if(localStorage.getItem("isAuth") == "false"){//If user is not already signed in with Google
+        if(localStorage.getItem("isAuth") === "false"){//If user is not already signed in with Google
             signInWithEmailAndPassword(auth, userEmail, userPassword)
             .then((userCredential) => {
                 localStorage.setItem("isAuth", true);
                 localStorage.setItem("isSignedIn", true);
-                alert("You're successfully signed in to BlackInk !");
-                console.log(userCredential.user.auth);
-                navigate("/");
-                window.location.reload();
+                toast({
+                    title: 'Signin Successful !',
+                    description: "You're signed in into BlackInk",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                    position: 'top',
+                });
+                console.log(userCredential.user.auth);   
+                setTimeout(() => {
+                    navigate("/");
+                    window.location.reload();
+                }, 3000);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -77,8 +98,18 @@ const Login = () => {
             });
         }
         else{//If user is already signed in with Google
-            alert("You're already signed in !");
-            navigate("/");
+            toast({
+                title: "You're already signed in !",
+                description: "You're already signed in into BlackInk",
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+                position: 'top',
+            });
+            setTimeout(() => {
+                navigate("/");
+                window.location.reload();
+            }, 3000);
         }
     }
     //allowing user to signin directly with Google
@@ -87,8 +118,18 @@ const Login = () => {
             then((response)=>{
                 localStorage.setItem("isAuth", true);
                 localStorage.setItem("isSignedIn", true);
-                navigate("/");
-                window.location.reload();
+                toast({
+                    title: 'Signin Successful !',
+                    description: "You're signed in into BlackInk",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                    position: 'top',
+                });
+                setTimeout(() => {
+                    navigate("/");
+                    window.location.reload();
+                }, 3000);
             }).
             catch((error)=>{
                 console.log(error);
@@ -101,8 +142,18 @@ const Login = () => {
         then(()=>{
             localStorage.setItem("isAuth", false);
             localStorage.setItem("isSignedIn", false);
-            navigate("/");
-            window.location.reload();
+            toast({
+                title: 'Signout Successful !',
+                description: "You're signed out of BlackInk",
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+                position: 'top',
+            });
+            setTimeout(() => {
+                navigate("/");
+                window.location.reload();
+            }, 3000);
         });
     }
     

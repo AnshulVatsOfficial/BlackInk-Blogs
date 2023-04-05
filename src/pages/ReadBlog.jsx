@@ -3,12 +3,15 @@ import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import {useEffect, useState } from "react"
 import { database } from '../firebase-config';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useToast } from '@chakra-ui/react';
 
 const ReadBlog = () => {
     const { id } = useParams();
     const [blogData, setBlogData] = useState({});
     const [userId, setUserId] = useState("");
     let navigate = useNavigate();
+
+    const toast = useToast();
 
     const auth = getAuth();//getting user uid on even after refresh
     onAuthStateChanged(auth, (user) => {
@@ -46,14 +49,39 @@ const ReadBlog = () => {
             const userBlogPost =  doc(database, "Blogs", id);
             await deleteDoc(userBlogPost)
             .then((resolve)=>{
-                console.log("Post Deleted Successfully !");
-                alert("Post Deleted Successfully !");
-                navigate("/");
-                window.location.reload();
+                toast({
+                    title: 'Post Deleted Successfully !',
+                    description: "",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                    position: 'top',
+                });
+                // alert("Post Deleted Successfully !");
+                setTimeout(() => {
+                    navigate("/");//getting redirected to home page after successful creation of a blog
+                    window.location.reload();
+                }, 2500);
             })
             .catch((error)=>{
                 console.log("Error Deleting Post !");
-                alert("Error Deleting Post !");
+                toast({
+                    title: 'Error Deleting Post !',
+                    description: "",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                });
+            });
+        }
+        else{
+            toast({
+                title: 'Deletion revoked successfully !',
+                description: "",
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+                position: 'top',
             });
         }
     }
@@ -68,7 +96,7 @@ const ReadBlog = () => {
                         </div>
 
                         <div className="display-blog-title col-lg-5 col-12 mt-4">
-                            <h2 className="">{blogData.title}</h2>
+                            <h1 className="">{blogData.title}</h1>
                             <h5 className="mt-3 mb-2">Author - {blogData.author}</h5>
                             <h6 className="mt-3 mb-4">Blog Posted - {blogData.postingTime}</h6>
                             {

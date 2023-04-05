@@ -12,7 +12,7 @@ html{
 }
 
 body{
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', sans-serif !important;
 }
 
 a{
@@ -85,6 +85,7 @@ a{
     border: none;
     border-radius: 5px;
     transition: 0.25s ease-in-out;
+    font-weight: 600;
 }
 
 .signin-common-btn:hover{
@@ -163,10 +164,12 @@ a{
 
 .write-your-blog .blog-title input{
     height: 50px;
+    font-family: Poppins;
 }
 
 .blog-body textarea{
     resize: none;
+    font-family: Poppins;
 }
 
 .blog-poster-div input::file-selector-button{
@@ -193,6 +196,7 @@ a{
 /*Login CSs Starts*/
 .create-acc-btn{
     font-size: 1rem;
+    font-weight: 600;
     background-color: #e1f3ff;
     color: #2a38a1;
     padding: 8px 20px;
@@ -241,10 +245,14 @@ a{
     color: #2a38a1;
 }
 
-.display-blog-title h2,
+.display-blog-title h1,
 .display-blog-title h5,
 .display-blog-title h6{
-    font-weight: 600;
+    font-weight: 600 !important;
+}
+
+.display-blog-title h1{
+    font-size: 2rem;
 }
 
 .write-your-own-btn{

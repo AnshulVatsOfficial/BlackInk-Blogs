@@ -6,6 +6,7 @@ import CreateABlogImage from '../assets/createablogimage.jpg';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useToast } from '@chakra-ui/react';
 
 //firebase config file (unique for each firebase project)
 const firebaseConfig = {
@@ -18,7 +19,7 @@ const firebaseConfig = {
 };
 
 const CreateBlog = () => {
-    //maintaining states of blog title, blog body and blog poster URL
+    //maintaining states of blog title, blog body and blog pos ter URL
     const [blogTitle, setBlogTitle] = useState("");
     const [blogBody, setBlogBody] = useState("");
     const [myBlogPoster, setMyBlogPoster] = useState({});
@@ -31,6 +32,8 @@ const CreateBlog = () => {
     // const [blogLengthMessage, setBlogLengthMessage] = useState(`Write ${noOfCharsInBlog} more characters`);
 
     let navigate = useNavigate();
+
+    const toast = useToast();
 
     const getBlogBodyLength = (event) => {
         setBlogBody(event.target.value);
@@ -132,7 +135,15 @@ const CreateBlog = () => {
                         console.log(blogPostTimestamp);
                     }
                 });
-                alert("Blog Poster Uploaded successfully !");
+                toast({
+                    title: 'Poster Uploaded Successfully !',
+                    description: "",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                    position: 'top',
+                });
+                // alert("Blog Poster Uploaded successfully !");
             }
             );
             localStorage.getItem("isPosterUploaded", true);//if poster uploaded successfully
@@ -163,9 +174,19 @@ const CreateBlog = () => {
             .catch((error)=>{
                 console.log(error);
             });
-            alert("Your Blog posted successfully !");
-            navigate("/");//getting redirected to home page after successful creation of a blog
-            window.location.reload();
+            toast({
+                title: 'Blog posted successfully !',
+                description: "",
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+                position: 'top',
+            });
+            // alert("Your Blog posted successfully !");
+            setTimeout(() => {
+                navigate("/");//getting redirected to home page after successful creation of a blog
+                window.location.reload();
+            }, 2500);
         }
     }
 
@@ -184,7 +205,7 @@ const CreateBlog = () => {
                         <div className="write-your-blog d-flex flex-column justify-content-center align-items-center col-lg-6 col-12 my-2">
                             {/* <h2 className="mb-3">What's on your mind today</h2> */}
                             <div className="blog-title col-12 mb-3 d-flex align-items-center">
-                                <input type="text" className="form-control mb-lg-0 mb-md-0 mb-sm-0 mb-3" name="blog-title" id="floatingInput" value={blogTitle} onChange={(event)=>{setBlogTitle(event.target.value)}} placeholder="Your blog title..."/>
+                                <input type="text" className="form-control mb-lg-0 mb-md-0 mb-sm-0 mb-3 col-lg-6 col-md-6 col-12" name="blog-title" id="floatingInput" value={blogTitle} onChange={(event)=>{setBlogTitle(event.target.value)}} placeholder="Your blog title..."/>
                                 {/* <button className="add-line-break signin-common-btn ms-lg-5 ms-md-5 ms-sm-5 ms-xs-5" onClick={()=>{(setBlogBody(blogBody+"<br/>"))}}>Add Break <i class="fa-solid fa-circle-plus"></i></button> */}
                                 {/* <p className="ms-lg-3 ms-md-5" style={{fontSize:"13px", textAlign:"center"}}>{blogLengthMessage}</p> */}
                             </div>

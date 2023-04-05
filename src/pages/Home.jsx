@@ -18,7 +18,6 @@ const Home = () => {
             const blogData = await getDocs(blogFetchingRef);
             setAllBlogs(blogData.docs.map((item) => ({...item.data(), id:item.id})));
         };
-
         displayAllBlogs();
     }, []);
 
@@ -71,7 +70,7 @@ const Home = () => {
                                             <div className="card-body d-flex flex-column justify-content-center">
                                                 <h5 className="card-title mt-2">{blog.title}</h5>
                                                 <p className="card-text" dangerouslySetInnerHTML={{__html:blog.body.slice(0, 90)}}/>
-                                                <div className="read-write-buttons">
+                                                <div className="read-write-buttons mt-4">
                                                     <Link to={`/readblog/${blog.id}`} className="signin-common-btn">Read</Link>
                                                     {
                                                         localStorage.getItem("isAuth") == "true" || localStorage.getItem("isSignedIn") == "true"

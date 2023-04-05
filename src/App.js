@@ -6,9 +6,11 @@ import ReadBlog from './pages/ReadBlog';
 import Navbar from './components/Navbar';
 import './Style.css';
 import './Responsive.css';
+import { MantineProvider } from '@mantine/core';
 
 function App() {
     return (
+        <MantineProvider withGlobalStyles withNormalizeCSS>
         <Router>
             <Navbar />
             <Routes>
@@ -18,6 +20,7 @@ function App() {
                 <Route exact path="/login" element={<Login />}></Route>
             </Routes>
         </Router>
+        </MantineProvider>
     );
 }
 
